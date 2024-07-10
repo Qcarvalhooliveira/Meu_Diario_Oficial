@@ -1,0 +1,21 @@
+[0;1;32m●[0m docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Wed 2024-07-10 15:19:36 CEST; 5h 3min ago
+TriggeredBy: [0;1;32m●[0m docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 1063 (dockerd)
+      Tasks: 11
+     Memory: 110.5M
+     CGroup: /system.slice/docker.service
+             └─1063 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.097770813+02:00" level=info msg="detected 127.0.0.53 nameserver, assuming systemd-resolved, so using resolv.conf: /run/systemd/resolve/resolv.conf"
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.294023028+02:00" level=info msg="[graphdriver] using prior storage driver: overlay2"
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.349941197+02:00" level=info msg="Loading containers: start."
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.646743623+02:00" level=info msg="Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address"
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.694551052+02:00" level=info msg="Loading containers: done."
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.722490505+02:00" level=warning msg="WARNING: No swap limit support"
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.722540683+02:00" level=info msg="Docker daemon" commit=de5c9cf containerd-snapshotter=false storage-driver=overlay2 version=26.1.4
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.723057223+02:00" level=info msg="Daemon has completed initialization"
+juil. 10 15:19:36 queise-ThinkPad dockerd[1063]: time="2024-07-10T15:19:36.813969814+02:00" level=info msg="API listen on /run/docker.sock"
+juil. 10 15:19:36 queise-ThinkPad systemd[1]: Started Docker Application Container Engine.
