@@ -2,6 +2,5 @@ Flask
 Flask-SQLAlchemy
 PyPDF2
 requests
-
-
-
+pytest
+pytest-flask
