@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db_test:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"  # Usar uma porta diferente para evitar conflitos com o ambiente de desenvolvimento
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_test:

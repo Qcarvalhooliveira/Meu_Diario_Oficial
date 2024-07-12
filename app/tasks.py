@@ -10,8 +10,8 @@ def process_daily_pdf():
 
     subscriptions = Subscription.query.all()
     for sub in subscriptions:
+        user = db.session.get(User, sub.user_id)
         if sub.keyword in text:
-            user = User.query.get(sub.user_id)
             send_notification(user.email, sub.keyword)
 
 def send_notification(email, keyword):
