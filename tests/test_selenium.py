@@ -1,4 +1,4 @@
-from app.utils import download_pdf
+from app.utils import download_pdf, extract_text_from_pdf 
 import io
 
 def test_download_pdf():
@@ -7,4 +7,24 @@ def test_download_pdf():
     assert pdf_file is not None
     assert isinstance(pdf_file, io.BytesIO)
 
+    text = extract_text_from_pdf(pdf_file)
+
+    keyword = "Rena miranda Cordeiro"
+    keyword_lower = keyword.lower()
+    text_lower = text.lower()
+
+    start_pos = text_lower.find(keyword_lower)
+
+    if start_pos != -1:
+        # Imprimir um contexto de 50 caracteres antes e depois da palavra encontrada
+        context_start = max(start_pos - 50, 0)
+        context_end = min(start_pos + len(keyword) + 50, len(text))
+        match_context = text[context_start:context_end]
+        print(f"Match encontrado para a palavra '{keyword}': ...{match_context}...")
+    else:
+        print(f"Nenhum match encontrado para a palavra '{keyword}'")
+    
+    assert start_pos != -1
+
+   
 test_download_pdf()
