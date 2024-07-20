@@ -126,3 +126,6 @@ cython_debug/
 
 # Local virtual environment
 venv/
+
+# to do list
+to-do-list.md

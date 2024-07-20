@@ -1,6 +1,7 @@
 from . import db
 from .models import User, Subscription
 from .utils import download_pdf, extract_text_from_pdf
+from .email import send_email
 import time
 
 def process_daily_pdf():
@@ -15,8 +16,9 @@ def process_daily_pdf():
             send_notification(user.email, sub.keyword)
 
 def send_notification(email, keyword):
-    # Função para enviar email de notificação
-    print(f"Enviando notificação para {email} sobre {keyword}")
+    subject = "Notificação de Palavra-chave"
+    body = f"Sua palavra-chave '{keyword}' foi encontrada no DOU."
+    send_email(email, subject, body)
 
 if __name__ == "__main__":
     while True:
