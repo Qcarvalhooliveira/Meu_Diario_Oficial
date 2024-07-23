@@ -58,3 +58,11 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 
 () Criar uma função para que o PDF não seja lido dia de sabado e domingo.
 
+
+## importante
+
+sabendo que o email esta sendo enviado fazer:
+limpar arquivo init para ão enviar mais o email ao ser iniciado. (verificar se esta tudo certo)
+verificar o arquivo email
+verificar arquivo tasks
+fazer o teste funcionar

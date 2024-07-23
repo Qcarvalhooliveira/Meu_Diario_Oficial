@@ -9,7 +9,7 @@ def test_download_pdf():
 
     text = extract_text_from_pdf(pdf_file)
 
-    keyword = "ROSANA CRISTINA SILVEIRA SILVA"
+    keyword = "EULINA SANTOS SANTANA"
     # verificar como se comporta com linhas quebradas. para entender como fazer para ele encontrar o keyword
     keyword_lower = keyword.lower()
     text_normalized = ' '.join(text.lower().split())
