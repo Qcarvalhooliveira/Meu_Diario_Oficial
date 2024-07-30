@@ -66,3 +66,4 @@ limpar arquivo init para ão enviar mais o email ao ser iniciado. (verificar se 
 verificar o arquivo email
 verificar arquivo tasks
 fazer o teste funcionar
+colocar o horario que o programa vai fazer a leitura do PDF

@@ -54,5 +54,5 @@ def test_send_notification():
         recipient, subject, body = args
 
         assert recipient == 'queisecarvalho@hotmail.com'
-        assert subject == "Notificação de Palavra-chave"
-        assert body == "Sua palavra-chave 'test keyword 1' foi encontrada no DOU."
+        assert subject == "Parabéns! Seu nome foi publicado no DOU"
+        assert body == "Seu nome foi encontrado no Diario Oficial da União de Salvador./ Por favor verifique a publicação de hoje"
