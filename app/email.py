@@ -18,7 +18,7 @@ api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(co
 
 # Função para enviar email
 def send_email(recipient, subject, body):
-    sender = {"name": "Seu Nome", "email": MAIL_DEFAULT_SENDER}
+    sender = {"name": "Meu Diário Oficial", "email": MAIL_DEFAULT_SENDER}
     to = [{"email": recipient}]
     email = sib_api_v3_sdk.SendSmtpEmail(to=to, sender=sender, subject=subject, text_content=body)
     

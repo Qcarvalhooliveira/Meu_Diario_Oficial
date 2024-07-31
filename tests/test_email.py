@@ -16,6 +16,6 @@ def test_send_email():
         email_arg = args[0]
 
         assert email_arg.to == [{"email": recipient}]
-        assert email_arg.sender == {"name": "Seu Nome", "email": "queisecarvalhodev@gmail.com"}
+        assert email_arg.sender == {"name": "Meu Diário Oficial", "email": "queisecarvalhodev@gmail.com"}
         assert email_arg.subject == subject
         assert email_arg.text_content == body

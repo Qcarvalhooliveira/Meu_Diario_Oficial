@@ -26,23 +26,23 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 
 () Banco de dados para guardar as informações do usuario como: nome completo, RG, CPF, senha e email.
 
-() Para buscar as informações no diario oficial usaremos python , baixaremos o arquivo para leitura dos dados e na manhã seguinte esse PDF evera ser deletado.
+(x) Para buscar as informações no diario oficial usaremos python , baixaremos o arquivo para leitura dos dados e na manhã seguinte esse PDF evera ser deletado.
 
-() Uma logica para buscar similaridades entre o arquivo baixado e os dados do usuario que estarão no banco de dados.
+(x) Uma logica para buscar similaridades entre o arquivo baixado e os dados do usuario que estarão no banco de dados.
 
-() Criar logica de alerta para quando o nome do usuario estiver presente no documento baixado, ele sra notificado por email.
+(x) Criar logica de alerta para quando o nome do usuario estiver presente no documento baixado, ele sra notificado por email.
 
 () Criar o email de alerta e atualizar o dashboard.
 
-() Criar testes unitarios para cada funcionalidade.
+(x) Criar testes unitarios para cada funcionalidade.
 
-() Download PDF.
+(x) Download PDF.
 
-() Extração do texto.
+(x) Extração do texto.
 
-() Correspondência de dados.
+(x) Correspondência de dados.
 
-() Envio de notificação.
+(x) Envio de notificação.
 
 () Testes de integração.
 
@@ -52,11 +52,11 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 
 () Simular PDF de 500 paginas.
 
-() Transformar as letras do user name em minusculas na função task, pois no pdf pode esta escrito de varias formas.
+(x) Transformar as letras do user name em minusculas na função task, pois no pdf pode esta escrito de varias formas.
 
 () Criar um array de nomes, para que eles sejam verificados no PDF.
 
-() Criar uma função para que o PDF não seja lido dia de sabado e domingo.
+(x) Criar uma função para que o PDF não seja lido dia de sabado e domingo.
 
 
 ## importante
@@ -67,3 +67,6 @@ verificar o arquivo email
 verificar arquivo tasks
 fazer o teste funcionar
 colocar o horario que o programa vai fazer a leitura do PDF
+criar email do aplicativo
+modificar o arquivo task para enviar o email para ususarios
+criar usuarios com insonia

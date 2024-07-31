@@ -1,8 +1,9 @@
 import pytest
 from unittest.mock import patch
 from app.models import User, Subscription
-from app.tasks import process_daily_pdf, send_notification
+from app.tasks import process_daily_pdf, send_notification, should_run_today
 from app import db, create_app
+from datetime import datetime
 
 @pytest.fixture(scope='module')
 def test_client():
@@ -18,19 +19,20 @@ def test_client():
 
 @pytest.fixture(scope='module')
 def init_database(test_client):
-    user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
-    user2 = User(name='Test User 2', email='iurithauront@gmail.com')
-    db.session.add(user1)
-    db.session.add(user2)
-    db.session.commit()
+    with test_client.application.app_context():
+        user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
+        user2 = User(name='Test User 2', email='iurithauront@gmail.com')
+        db.session.add(user1)
+        db.session.add(user2)
+        db.session.commit()
 
-    subscription1 = Subscription(user_id=user1.id, keyword='test keyword 1')
-    subscription2 = Subscription(user_id=user2.id, keyword='test keyword 2')
-    db.session.add(subscription1)
-    db.session.add(subscription2)
-    db.session.commit()
+        subscription1 = Subscription(user_id=user1.id, keyword='test keyword 1')
+        subscription2 = Subscription(user_id=user2.id, keyword='test keyword 2')
+        db.session.add(subscription1)
+        db.session.add(subscription2)
+        db.session.commit()
 
-    yield db
+        yield db
 
 def test_process_daily_pdf(init_database):
     with patch('app.tasks.download_pdf') as mock_download_pdf, \
@@ -54,5 +56,28 @@ def test_send_notification():
         recipient, subject, body = args
 
         assert recipient == 'queisecarvalho@hotmail.com'
-        assert subject == "Parabéns! Seu nome foi publicado no DOU"
-        assert body == "Seu nome foi encontrado no Diario Oficial da União de Salvador./ Por favor verifique a publicação de hoje"
+        assert subject == "Parabéns! Você seu nome foi encontrado no Diário Oficial"
+        assert body == (
+            "Parabéns! Seu nome 'test keyword 1' foi encontrado no Diário Oficial de Salvador.\n\n"
+            "Por favor, verifique diretamente no site para saber em qual concurso você foi convocado.\n"
+        )
+
+@pytest.mark.parametrize("date_str, expected", [
+    ("2024-07-26", True),  # Sexta-feira, não é feriado
+    ("2024-07-27", False),  # Sábado
+    ("2024-07-28", False),  # Domingo
+    ("2024-01-01", False),  # Ano Novo
+    ("2024-12-25", False),  # Natal
+])
+def test_should_run_today(monkeypatch, date_str, expected):
+    # Mock datetime to control the current date
+    class MockDateTime(datetime):
+        @classmethod
+        def today(cls):
+            return cls.strptime(date_str, "%Y-%m-%d")
+
+    monkeypatch.setattr("app.tasks.datetime", MockDateTime)
+    assert should_run_today() == expected
+
+if __name__ == "__main__":
+    pytest.main()
