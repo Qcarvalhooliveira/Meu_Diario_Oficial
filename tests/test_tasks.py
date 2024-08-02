@@ -9,17 +9,19 @@ from datetime import datetime
 def test_client():
     app = create_app()
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/Meu_Diario_Oficial.db'
 
     with app.test_client() as testing_client:
         with app.app_context():
             db.create_all()
             yield testing_client
+            db.session.remove()
             db.drop_all()
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def init_database(test_client):
     with test_client.application.app_context():
+        db.create_all()
         user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
         user2 = User(name='Test User 2', email='iurithauront@gmail.com')
         db.session.add(user1)
@@ -33,6 +35,8 @@ def init_database(test_client):
         db.session.commit()
 
         yield db
+        db.session.remove()
+        db.drop_all()
 
 def test_process_daily_pdf(init_database):
     with patch('app.tasks.download_pdf') as mock_download_pdf, \
@@ -56,10 +60,11 @@ def test_send_notification():
         recipient, subject, body = args
 
         assert recipient == 'queisecarvalho@hotmail.com'
-        assert subject == "Parabéns! Você seu nome foi encontrado no Diário Oficial"
+        assert subject == "Parabéns! Seu nome foi encontrado no Diário Oficial"
         assert body == (
-            "Parabéns! Seu nome 'test keyword 1' foi encontrado no Diário Oficial de Salvador.\n\n"
-            "Por favor, verifique diretamente no site para saber em qual concurso você foi convocado.\n"
+            "Parabéns! 'test keyword 1',\n\n"
+            "Seu nome foi encontrado no Diário Oficial de Salvador.\n\n"
+            "Por favor, verifique diretamente no site para qual concurso você foi convocado.\n"
         )
 
 @pytest.mark.parametrize("date_str, expected", [

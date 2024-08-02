@@ -6,3 +6,5 @@ pytest
 pytest-flask
 seleniumls
 sib-api-v3-sdk
+apscheduler
+atexit

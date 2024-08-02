@@ -1,23 +1,22 @@
 import pytest
 from app import create_app, db
-import os
 
 @pytest.fixture(scope='module')
-def test_client():
-    os.environ['DATABASE_URL'] = 'postgresql://test_user:test_password@localhost:5433/test_db'
+def app():
     app = create_app()
     app.config['TESTING'] = True
-
-    with app.test_client() as testing_client:
-        with app.app_context():
-            db.create_all()
-            yield testing_client
-            db.drop_all()
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/Meu_Diario_Oficial.db'
+    with app.app_context():
+        yield app
 
 @pytest.fixture(scope='module')
-def init_database():
-    db.create_all()
+def test_client(app):
+    return app.test_client()
 
-    yield db  # Este yield retorna o banco de dados para uso nos testes
-
-    db.drop_all()
+@pytest.fixture(scope='module')
+def init_database(app):
+    with app.app_context():
+        db.create_all()
+        yield db
+        db.session.remove()
+        db.drop_all()

@@ -70,3 +70,4 @@ colocar o horario que o programa vai fazer a leitura do PDF
 criar email do aplicativo
 modificar o arquivo task para enviar o email para ususarios
 criar usuarios com insonia
+quando a pessoa se inscrever ela deve receber um email confirmando que ele esta inscrito (parabens voce esta inscrito em nossa lista)

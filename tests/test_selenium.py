@@ -1,6 +1,6 @@
 import pytest
 from app.utils import download_pdf, extract_text_from_pdf
-from app.models import Subscription
+from app.models import Subscription, User
 from app import db, create_app
 import io
 
@@ -8,17 +8,34 @@ import io
 def test_client():
     app = create_app()
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/Meu_Diario_Oficial.db'  # Certifique-se de que o banco de dados correto está sendo usado
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/Meu_Diario_Oficial.db'
 
     with app.test_client() as testing_client:
         with app.app_context():
+            db.create_all()
             yield testing_client
+            db.session.remove()
+            db.drop_all()
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def init_database(test_client):
-    # Assumindo que já existem dados no banco de dados, não precisamos adicionar nada aqui.
-    # Se precisar, você pode adicionar dados de teste aqui.
-    pass
+    with test_client.application.app_context():
+        db.create_all()
+        user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
+        user2 = User(name='Test User 2', email='iurithauront@gmail.com')
+        db.session.add(user1)
+        db.session.add(user2)
+        db.session.commit()
+
+        subscription1 = Subscription(user_id=user1.id, keyword='test keyword 1')
+        subscription2 = Subscription(user_id=user2.id, keyword='test keyword 2')
+        db.session.add(subscription1)
+        db.session.add(subscription2)
+        db.session.commit()
+
+        yield db
+        db.session.remove()
+        db.drop_all()
 
 def test_download_pdf(init_database):
     # Obter todas as keywords reais do banco de dados
