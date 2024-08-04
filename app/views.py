@@ -1,7 +1,9 @@
 from flask import request, jsonify, Blueprint
+from sqlalchemy.exc import IntegrityError
 from . import db
 from .models import User
 import logging
+from .email import send_email
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,9 +15,15 @@ def add_user():
     data = request.get_json()
     user = User(name=data['name'], email=data['email'], keyword=data.get('keyword'))
     db.session.add(user)
-    db.session.commit()
-    logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}, Keyword: {user.keyword}")
-    return jsonify({'message': 'User added successfully!'})
+    try:
+        db.session.commit()
+        send_email(user.email,'Email cadastrado', 'Parabens seu email foi cadastrado com sucesso em nossa aplicação.')
+        logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}, Keyword: {user.keyword}")
+        return jsonify({'message': 'User added successfully!'})
+    except IntegrityError:
+        db.session.rollback()
+        logger.warning(f"Email {user.email} already exists in the database.")
+        return jsonify({'message': 'This email is already registered. Please use another email.'}), 400
 
 @main.route('/delete_user/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
