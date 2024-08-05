@@ -66,7 +66,7 @@ sabendo que o email esta sendo enviado fazer:
 (x)verificar o arquivo email
 (x)verificar arquivo tasks
 ()fazer o teste funcionar
-()colocar o horario que o programa vai fazer a leitura do PDF
+(x)colocar o horario que o programa vai fazer a leitura do PDF
 ()criar email do aplicativo
 (x)modificar o arquivo task para enviar o email para ususarios
 (x)criar usuarios com postman
