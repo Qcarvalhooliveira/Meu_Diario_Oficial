@@ -5,7 +5,7 @@ import sib_api_v3_sdk
 
 def test_send_email():
     with patch('sib_api_v3_sdk.TransactionalEmailsApi.send_transac_email') as mock_send_email:
-        recipient = 'queisecarvalhodev@gmail.com'
+        recipient = 'meu.diario.oficial.ssa@gmail.com'
         subject = 'Test Subject'
         body = 'This is a test email.'
 
@@ -16,6 +16,6 @@ def test_send_email():
         email_arg = args[0]
 
         assert email_arg.to == [{"email": recipient}]
-        assert email_arg.sender == {"name": "Meu Diário Oficial", "email": "queisecarvalhodev@gmail.com"}
+        assert email_arg.sender == {"name": "Meu Diário Oficial", "email": "meu.diario.oficial.ssa@gmail.com"}
         assert email_arg.subject == subject
         assert email_arg.text_content == body

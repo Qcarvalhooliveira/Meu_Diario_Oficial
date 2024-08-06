@@ -22,10 +22,14 @@ def process_daily_pdf():
         pdf_file = download_pdf(url)
         if pdf_file:
             text = extract_text_from_pdf(pdf_file)
+            text_normalized = ' '.join(text.lower().split())
             users = User.query.all()
             logger.info(f"Found {len(users)} users in the database")
-            for user in users:
-                if user.name and user.name in text:
+            for user in users:  
+                logger.info(f"esse logger so deve aparecer uma vez for user in users")
+                user_name_normalized = ' '.join(user.name.lower().split())
+                if user_name_normalized in text_normalized:
+                    logger.info(f"esse logger so deve aparecer uma vez if uer name isin text")
                     logger.info(f"Keyword '{user.name}' found for user {user.email}")
                     send_notification(user.email, user.name)
             success = True

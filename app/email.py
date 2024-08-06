@@ -4,7 +4,7 @@ from sib_api_v3_sdk.rest import ApiException
 
 # Configurar chave API e remetente padrão
 SENDINBLUE_API_KEY = os.getenv('SENDINBLUE_API_KEY')
-MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', 'queisecarvalhodev@gmail.com')
+MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', 'meu.diario.oficial.ssa@gmail.com')
 
 if not SENDINBLUE_API_KEY:
     raise ValueError("A chave SENDINBLUE_API_KEY não está definida. Por favor, defina a variável de ambiente.")

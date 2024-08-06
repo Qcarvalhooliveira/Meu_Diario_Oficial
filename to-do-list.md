@@ -67,12 +67,13 @@ sabendo que o email esta sendo enviado fazer:
 (x)verificar arquivo tasks
 ()fazer o teste funcionar
 (x)colocar o horario que o programa vai fazer a leitura do PDF
-()criar email do aplicativo
+(x)criar email do aplicativo
 (x)modificar o arquivo task para enviar o email para ususarios
 (x)criar usuarios com postman
 (x)quando a pessoa se inscrever ela deve receber um email confirmando que ele esta inscrito (parabens voce esta inscrito em nossa lista)
-() verificar se esta lendo e enviando email para TODOS cadastrados
+(x) verificar se esta lendo e enviando email para TODOS cadastrados
 () user id tem que ser random string
 () fazer senha para usuarios e ela tem que ser hashed.
-() fazer rotas de login - protegida
 () fazer token de login
+() fazer rotas de login - protegida
+() bug fix - esta mandando email duas vezes
