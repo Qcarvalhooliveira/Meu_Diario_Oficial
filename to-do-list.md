@@ -74,6 +74,6 @@ sabendo que o email esta sendo enviado fazer:
 (x) verificar se esta lendo e enviando email para TODOS cadastrados
 () user id tem que ser random string
 () fazer senha para usuarios e ela tem que ser hashed.
-() fazer token de login
 () fazer rotas de login - protegida
-() bug fix - esta mandando email duas vezes
+() fazer token de login
+() bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
