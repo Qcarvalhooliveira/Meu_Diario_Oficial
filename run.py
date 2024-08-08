@@ -1,4 +1,3 @@
-# run.py
 from app import create_app
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -21,7 +20,7 @@ def scheduled_task():
             process_daily_pdf()
 
 # Agendar a tarefa para rodar todos os dias às 12:50
-scheduler.add_job(func=scheduled_task, trigger=CronTrigger(hour=14, minute=6,))
+scheduler.add_job(func=scheduled_task, trigger=CronTrigger(hour=15, minute=16))
 
 scheduler.start()
 

@@ -17,7 +17,7 @@ def add_user():
     db.session.add(user)
     try:
         db.session.commit()
-        send_email(user.email,'Email cadastrado', 'Parabens seu email foi cadastrado com sucesso em nossa aplicação.')
+        send_email(user.email, 'Email cadastrado', 'Parabens seu email foi cadastrado com sucesso em nossa aplicação.')
         logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}, Keyword: {user.keyword}")
         return jsonify({'message': 'User added successfully!'})
     except IntegrityError:
@@ -25,7 +25,7 @@ def add_user():
         logger.warning(f"Email {user.email} already exists in the database.")
         return jsonify({'message': 'This email is already registered. Please use another email.'}), 400
 
-@main.route('/delete_user/<int:user_id>', methods=['DELETE'])
+@main.route('/delete_user/<string:user_id>', methods=['DELETE'])  # Alterado de <int> para <string>
 def delete_user(user_id):
     user = db.session.get(User, user_id)
     if user:
