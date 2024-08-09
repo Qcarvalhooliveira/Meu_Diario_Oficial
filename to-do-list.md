@@ -73,7 +73,10 @@ sabendo que o email esta sendo enviado fazer:
 (x)quando a pessoa se inscrever ela deve receber um email confirmando que ele esta inscrito (parabens voce esta inscrito em nossa lista)
 (x) verificar se esta lendo e enviando email para TODOS cadastrados
 (x) user id tem que ser random string
-() fazer senha para usuarios e ela tem que ser hashed.
-() fazer rotas de login - protegida
-() fazer token de login
+(x) fazer senha para usuarios e ela tem que ser hashed.
+(x) fazer rotas de login - protegida
+(x) fazer token de login
 () bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
+() modificar temporariamente a rota de get ou o banco de dados para permitir ver a senha armazenada para saber se ela esta mesmo sendo hasheada
+() fazer testes do backend
+() padronizar o email

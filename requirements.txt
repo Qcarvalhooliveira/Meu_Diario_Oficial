@@ -8,3 +8,5 @@ seleniumls
 sib-api-v3-sdk
 apscheduler
 atexit
+bcrypt
+jwt
