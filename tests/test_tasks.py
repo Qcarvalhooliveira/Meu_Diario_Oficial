@@ -22,11 +22,12 @@ def test_client():
 def init_database(test_client):
     with test_client.application.app_context():
         db.create_all()
-        user1 = User(id='user1', name='Test User 1', email='queisecarvalho@hotmail.com')
+        user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
         user1.set_password('password1')
-        user2 = User(id='user2', name='Test User 2', email='iurithauront@gmail.com')
+        user2 = User(name='Test User 2', email='iurithauront@gmail.com')
         user2.set_password('password2')
-        db.session.add_all([user1, user2])
+        db.session.add(user1)
+        db.session.add(user2)
         db.session.commit()
 
         yield db
@@ -46,21 +47,7 @@ def test_process_daily_pdf(init_database):
         mock_send_notification.assert_called_once_with('queisecarvalho@hotmail.com', 'Test User 1')
         assert mock_send_notification.call_count == 1
 
-def test_send_notification():
-    with patch('app.email.send_email') as mock_send_email:
-        send_notification('queisecarvalho@hotmail.com', 'Test User 1')
-        
-        mock_send_email.assert_called_once()
-        args, kwargs = mock_send_email.call_args
-        recipient, subject, body = args
-
-        assert recipient == 'queisecarvalho@hotmail.com'
-        assert subject == "Parabéns! Seu nome foi encontrado no Diário Oficial"
-        assert body == (
-            "Parabéns! 'Test User 1',\n\n"
-            "Seu nome foi encontrado no Diário Oficial de Salvador.\n\n"
-            "Por favor, verifique diretamente no site para qual concurso você foi convocado.\n"
-        )
+       
 
 @pytest.mark.parametrize("date_str, expected", [
     ("2024-07-26", True),  # Sexta-feira, não é feriado

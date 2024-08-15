@@ -21,9 +21,9 @@ def test_client():
 def init_database(test_client):
     with test_client.application.app_context():
         db.create_all()
-        user1 = User(id='user1', name='Test User 1', email='queisecarvalho@hotmail.com')
+        user1 = User(id='user1', name='BRUNO SOARES REIS', email='doc.test.id4@gmail.com')
         user1.set_password('password1')
-        user2 = User(id='user2', name='Test User 2', email='iurithauront@gmail.com')
+        user2 = User(id='user2', name='LUIZ ANTÔNIO VASCONCELLOS CARREIRA', email='zara.test.id2@gmail.com')
         user2.set_password('password2')
         db.session.add_all([user1, user2])
         db.session.commit()
