@@ -1,6 +1,6 @@
 import pytest
 from app.utils import download_pdf, extract_text_from_pdf
-from app.models import Subscription, User
+from app.models import User
 from app import db, create_app
 import io
 
@@ -21,16 +21,11 @@ def test_client():
 def init_database(test_client):
     with test_client.application.app_context():
         db.create_all()
-        user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
-        user2 = User(name='Test User 2', email='iurithauront@gmail.com')
-        db.session.add(user1)
-        db.session.add(user2)
-        db.session.commit()
-
-        subscription1 = Subscription(user_id=user1.id, keyword='test keyword 1')
-        subscription2 = Subscription(user_id=user2.id, keyword='test keyword 2')
-        db.session.add(subscription1)
-        db.session.add(subscription2)
+        user1 = User(id='user1', name='Test User 1', email='queisecarvalho@hotmail.com')
+        user1.set_password('password1')
+        user2 = User(id='user2', name='Test User 2', email='iurithauront@gmail.com')
+        user2.set_password('password2')
+        db.session.add_all([user1, user2])
         db.session.commit()
 
         yield db
@@ -38,9 +33,9 @@ def init_database(test_client):
         db.drop_all()
 
 def test_download_pdf(init_database):
-    # Obter todas as keywords reais do banco de dados
-    subscriptions = Subscription.query.all()
-    assert len(subscriptions) > 0, "No subscriptions found in the database."
+    # Obter todos os nomes reais dos usuários no banco de dados
+    users = User.query.all()
+    assert len(users) > 0, "No users found in the database."
 
     url = 'http://www.dom.salvador.ba.gov.br/'
     pdf_file = download_pdf(url)
@@ -50,20 +45,20 @@ def test_download_pdf(init_database):
     text = extract_text_from_pdf(pdf_file)
     text_normalized = ' '.join(text.lower().split())
 
-    for subscription in subscriptions:
-        keyword = subscription.keyword
-        keyword_lower = keyword.lower()
+    for user in users:
+        user_name = user.name
+        user_name_lower = user_name.lower()
 
-        start_pos = text_normalized.find(keyword_lower)
+        start_pos = text_normalized.find(user_name_lower)
 
         if start_pos != -1:
             # Imprimir um contexto de 50 caracteres antes e depois da palavra encontrada
             context_start = max(start_pos - 50, 0)
-            context_end = min(start_pos + len(keyword) + 50, len(text))
+            context_end = min(start_pos + len(user_name) + 50, len(text))
             match_context = text[context_start:context_end]
-            print(f"Match encontrado para a palavra '{keyword}': ...{match_context}...")
+            print(f"Match encontrado para o nome '{user_name}': ...{match_context}...")
         else:
-            print(f"Nenhum match encontrado para a palavra '{keyword}'")
+            print(f"Nenhum match encontrado para o nome '{user_name}'")
         
         assert start_pos != -1
 

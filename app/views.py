@@ -6,7 +6,8 @@ import logging
 import jwt
 import datetime
 from functools import wraps
-from .email import send_email
+from .email import send_email, generate_welcome_email
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -53,7 +54,14 @@ def add_user():
     db.session.add(user)
     try:
         db.session.commit()
-        send_email(user.email, 'Email cadastrado', 'Parabéns, seu email foi cadastrado com sucesso em nossa aplicação.')
+
+        # Gerar o corpo do e-mail formatado
+        logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png"  # Substitua com a URL real do logo
+        email_body = generate_welcome_email(user.name, logo_url)
+
+        # Enviar o e-mail formatado
+        send_email(user.email, 'Email cadastrado com sucesso!', email_body)
+
         logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}")
         return jsonify({'message': 'User added successfully!'})
     except IntegrityError:

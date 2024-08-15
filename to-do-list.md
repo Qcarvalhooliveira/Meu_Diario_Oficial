@@ -76,7 +76,8 @@ sabendo que o email esta sendo enviado fazer:
 (x) fazer senha para usuarios e ela tem que ser hashed.
 (x) fazer rotas de login - protegida
 (x) fazer token de login
-() bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
+(x) bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
 () modificar temporariamente a rota de get ou o banco de dados para permitir ver a senha armazenada para saber se ela esta mesmo sendo hasheada
 () fazer testes do backend
 () padronizar o email
+() fazer rotas de logout

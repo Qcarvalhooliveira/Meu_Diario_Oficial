@@ -29,3 +29,23 @@ def send_email(recipient, subject, body):
     except ApiException as e:
         print(f"Exception when calling SMTPApi->send_transac_email: {e}")
         return None
+
+def generate_welcome_email(user_name, logo_url):
+    return f"""
+  <html>
+    <body style="background-color: #ffff; font-family: Arial, sans-serif; margin: 0; padding: 0; width: 100%;">
+        <div style="background-color: #c7e6fd; padding: 20px; text-align: center;">
+            <table align="center" width="100%" style="max-width: 600px; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <tr>
+                    <td style="text-align: center;">
+                        <img src={logo_url} alt="Logo" style="margin: 0 0 30px 5px">
+                        <h1 style="color: #333333; text-align: left; font-size: 20px; margin: 5px 0;">Parabéns, {user_name}!</h1>
+                        <p style="color: #333333;text-align: left; font-size: 18px; margin: 5px 0;">Seu e-mail foi cadastrado com sucesso em nossa aplicação.</p>
+                        <p style="color: #333333;text-align: left; font-size: 18px; margin: 5px 0;">Estamos felizes em tê-lo(a) conosco!</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    </html>
+    """

@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from app.models import User, Subscription
+from app.models import User
 from app.tasks import process_daily_pdf, send_notification, should_run_today
 from app import db, create_app
 from datetime import datetime
@@ -22,16 +22,11 @@ def test_client():
 def init_database(test_client):
     with test_client.application.app_context():
         db.create_all()
-        user1 = User(name='Test User 1', email='queisecarvalho@hotmail.com')
-        user2 = User(name='Test User 2', email='iurithauront@gmail.com')
-        db.session.add(user1)
-        db.session.add(user2)
-        db.session.commit()
-
-        subscription1 = Subscription(user_id=user1.id, keyword='test keyword 1')
-        subscription2 = Subscription(user_id=user2.id, keyword='test keyword 2')
-        db.session.add(subscription1)
-        db.session.add(subscription2)
+        user1 = User(id='user1', name='Test User 1', email='queisecarvalho@hotmail.com')
+        user1.set_password('password1')
+        user2 = User(id='user2', name='Test User 2', email='iurithauront@gmail.com')
+        user2.set_password('password2')
+        db.session.add_all([user1, user2])
         db.session.commit()
 
         yield db
@@ -44,16 +39,16 @@ def test_process_daily_pdf(init_database):
          patch('app.tasks.send_notification') as mock_send_notification:
 
         mock_download_pdf.return_value = b"%PDF-1.4..."
-        mock_extract_text_from_pdf.return_value = "This is a test document with test keyword 1 and some more text."
+        mock_extract_text_from_pdf.return_value = "This is a test document with Test User 1 and some more text."
 
         process_daily_pdf()
 
-        mock_send_notification.assert_called_once_with('queisecarvalho@hotmail.com', 'test keyword 1')
+        mock_send_notification.assert_called_once_with('queisecarvalho@hotmail.com', 'Test User 1')
         assert mock_send_notification.call_count == 1
 
 def test_send_notification():
     with patch('app.email.send_email') as mock_send_email:
-        send_notification('queisecarvalho@hotmail.com', 'test keyword 1')
+        send_notification('queisecarvalho@hotmail.com', 'Test User 1')
         
         mock_send_email.assert_called_once()
         args, kwargs = mock_send_email.call_args
@@ -62,7 +57,7 @@ def test_send_notification():
         assert recipient == 'queisecarvalho@hotmail.com'
         assert subject == "Parabéns! Seu nome foi encontrado no Diário Oficial"
         assert body == (
-            "Parabéns! 'test keyword 1',\n\n"
+            "Parabéns! 'Test User 1',\n\n"
             "Seu nome foi encontrado no Diário Oficial de Salvador.\n\n"
             "Por favor, verifique diretamente no site para qual concurso você foi convocado.\n"
         )
