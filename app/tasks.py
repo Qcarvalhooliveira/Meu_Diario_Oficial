@@ -2,7 +2,7 @@
 from . import db
 from .models import User
 from .utils import download_pdf, extract_text_from_pdf
-from .email import send_email
+from .email import send_email, generate_notification_email
 import time
 from datetime import datetime
 import logging
@@ -43,11 +43,8 @@ def process_daily_pdf():
 
 def send_notification(email, keyword):
     subject = "Parabéns! Seu nome foi encontrado no Diário Oficial"
-    body = (
-        f"Parabéns! '{keyword}',\n\n"
-        "Seu nome foi encontrado no Diário Oficial de Salvador.\n\n"
-        "Por favor, verifique diretamente no site para qual concurso você foi convocado.\n"
-    )
+    logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png"  # Substitua com a URL real do logo
+    body = generate_notification_email(keyword, logo_url)
     send_email(email, subject, body)
     logger.info(f"Notification sent to {email} for keyword '{keyword}'")
 

@@ -20,7 +20,7 @@ def scheduled_task():
             process_daily_pdf()
 
 # Agendar a tarefa para rodar todos os dias às 12:50
-scheduler.add_job(func=scheduled_task, trigger=CronTrigger(hour=15, minute=16))
+scheduler.add_job(func=scheduled_task, trigger=CronTrigger(hour=20, minute=32))
 
 scheduler.start()
 
