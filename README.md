@@ -1,4 +1,4 @@
-# **Meu Diário Oficial**
+# **Meu Diário Oficial - Back-End**
 
 
 ## **Overview**
@@ -31,7 +31,7 @@ Ensure you have the following installed on your system:
 First, clone the repository to your local machine using the following command:
 
 ```
-git clone https://github.com/yourusername/Meu_Diario_Oficial.git
+git clone https://github.com/Qcarvalhooliveira/Meu_Diario_Oficial.git
 cd Meu_Diario_Oficial
 ```
 
@@ -89,7 +89,7 @@ flask db upgrade
 Start the Flask development server:
 
 ```
-flask run
+python run.py
 ```
 
 The application will start running on http://127.0.0.1:5000/.
@@ -109,6 +109,10 @@ The application automatically checks the official gazette daily and sends notifi
 
 To stop the Flask development server, press CTRL+C in your terminal.
 
+## **Author** :black_nib:
 
-VERIFICAR SE O COMANDO PARA RODAR 2 PYTHON RUN OU FLASK RUN E COLOCAR AQUI O CERTO
-fazer teste se o docker compose roda mesmo o programa
+* **Queise Carvalho de Oliveira** - [Queise Oliveira](https://github.com/Qcarvalhooliveira)
+
+
+## License :page_with_curl:
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
