@@ -22,37 +22,45 @@ def process_daily_pdf():
     email to the user. If the process fails, retries up to MAX_RETRIES times.
     If all retries fail, sends a failure notification to all users.
     """
+    print("Starting process_daily_pdf...")
     url = 'http://www.dom.salvador.ba.gov.br/'
     retries = 0
     success = False
     
     while retries < MAX_RETRIES and not success:
         try:
+            print(f"Attempt {retries + 1} to download and process PDF...")
             pdf_file = download_pdf(url)
             if pdf_file:
-            # Normalize the extracted text for easier matching
+                print("PDF downloaded successfully.")
+                # Normalize the extracted text for easier matching
                 text = extract_text_from_pdf(pdf_file)
                 text_normalized = ' '.join(text.lower().split())
-            # Fetch all users from the database
+                # Fetch all users from the database
                 users = User.query.all()
                 logger.info(f"Found {len(users)} users in the database")
-            # Check if any user's name appears in the text   
+                # Check if any user's name appears in the text   
                 for user in users:  
                     user_name_normalized = ' '.join(user.name.lower().split())
                     if user_name_normalized in text_normalized:
                         logger.info(f"Keyword '{user.name}' found for user {user.email}")
                         send_notification(user.email, user.name)
                 success = True
+            else:
+                print("PDF file is None.")
         except Exception as e:
             logger.warning(f"Attempt {retries + 1} failed with error: {e}")
+            print(f"Exception occurred: {e}")
         # Log the failure and retry after a delay
         retries += 1
         if retries < MAX_RETRIES:
+            print(f"Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
     
     if not success:
-    # If all retries fail, notify users of the failure
+        # If all retries fail, notify users of the failure
         logger.error("Failed to process PDF after maximum retries")
+        print("All retries failed. Notifying users of the failure.")
         notify_failure()
 
 def send_notification(email, keyword):
@@ -60,17 +68,20 @@ def send_notification(email, keyword):
     Sends a notification email to the user indicating that their name
     was found in the daily publication.
     """
+    print(f"Sending notification to {email} for keyword '{keyword}'...")
     subject = "Parabéns! Seu nome foi encontrado no Diário Oficial"
     logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png" 
     body = generate_notification_email(keyword, logo_url)
     send_email(email, subject, body)
     logger.info(f"Notification sent to {email} for keyword '{keyword}'")
+    print(f"Notification sent to {email}.")
 
 def notify_failure():
     """
     Sends an email to all users notifying them that the daily PDF
     processing failed after the maximum number of retries.
     """
+    print("Sending failure notifications to all users...")
     users = User.query.all()
     subject = "Falha na Verificação do Diário Oficial"
     logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png" 
@@ -78,17 +89,20 @@ def notify_failure():
         body = generate_error_email(user.name, logo_url)
         send_email(user.email, subject, body)
         logger.info(f"Failure notification sent to {user.email}")
+        print(f"Failure notification sent to {user.email}.")
 
 def should_run_today():
     """
     Determines whether the daily task should run today. The task is skipped
     if today is a weekend or a recognized holiday.
     """
+    print("Checking if the task should run today...")
     today = datetime.today()
     
     # Skip weekends
     if today.weekday() >= 5:
         logger.info("Today is weekend, no need to run the task")
+        print("Today is a weekend. Skipping the task.")
         return False
     
     # List of holidays (MM-DD format)
@@ -107,8 +121,10 @@ def should_run_today():
     # Skip recognized holidays
     if today.strftime("%d-%m") in holidays:
         logger.info("Today is a holiday, no need to run the task")
+        print("Today is a holiday. Skipping the task.")
         return False
     
+    print("The task will run today.")
     return True
 
 if __name__ == "__main__":
@@ -117,8 +133,10 @@ if __name__ == "__main__":
     The task checks whether it should run today, and if so,
     it attempts to process the PDF.
     """
+    print("Starting main loop for daily PDF processing...")
     while True:
         if should_run_today():
             process_daily_pdf()
         # Wait 24 hours before the next run
+        print("Sleeping for 24 hours...")
         time.sleep(24 * 60 * 60)
