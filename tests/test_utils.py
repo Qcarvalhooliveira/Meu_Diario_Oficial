@@ -6,6 +6,10 @@ import io
 
 @pytest.fixture(scope='module')
 def test_client():
+    """
+    Sets up the Flask test client with the appropriate configuration
+    for testing purposes. This fixture runs once per module.
+    """
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/Meu_Diario_Oficial.db'
@@ -19,6 +23,10 @@ def test_client():
 
 @pytest.fixture(scope='function')
 def init_database(test_client):
+    """
+    Initializes the database with test data before each test function,
+    and cleans up (drops the database tables) after each test function.
+    """
     with test_client.application.app_context():
         db.create_all()
         user1 = User(id='user1', name='BRUNO SOARES REIS', email='doc.test.id4@gmail.com')
@@ -33,7 +41,10 @@ def init_database(test_client):
         db.drop_all()
 
 def test_download_pdf(init_database):
-    # Obter todos os nomes reais dos usuários no banco de dados
+    """
+    Tests the download_pdf and extract_text_from_pdf functions.
+    """
+    # Get all user names from the database
     users = User.query.all()
     assert len(users) > 0, "No users found in the database."
 
@@ -42,9 +53,11 @@ def test_download_pdf(init_database):
     assert pdf_file is not None
     assert isinstance(pdf_file, io.BytesIO)
 
+    # Extract text from the PDF and normalize it for easier matching
     text = extract_text_from_pdf(pdf_file)
     text_normalized = ' '.join(text.lower().split())
 
+    # Check if each user's name is found in the extracted text
     for user in users:
         user_name = user.name
         user_name_lower = user_name.lower()
@@ -52,13 +65,13 @@ def test_download_pdf(init_database):
         start_pos = text_normalized.find(user_name_lower)
 
         if start_pos != -1:
-            # Imprimir um contexto de 50 caracteres antes e depois da palavra encontrada
+            # Print a context of 50 characters before and after the found match
             context_start = max(start_pos - 50, 0)
             context_end = min(start_pos + len(user_name) + 50, len(text))
             match_context = text[context_start:context_end]
-            print(f"Match encontrado para o nome '{user_name}': ...{match_context}...")
+            print(f"Match found for name '{user_name}': ...{match_context}...")
         else:
-            print(f"Nenhum match encontrado para o nome '{user_name}'")
+            print(f"No match found for name '{user_name}'")
         
         assert start_pos != -1
 

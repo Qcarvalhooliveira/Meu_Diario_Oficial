@@ -8,22 +8,26 @@ import datetime
 from functools import wraps
 from .email import send_email, generate_welcome_email
 
-
+# Set up logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Define a blueprint for the main routes
 main = Blueprint('main', __name__)
 
 def token_required(f):
+    """
+    Decorator that checks if a valid JWT token is provided in the request headers.
+    """
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
 
-        # Verifica se o token foi enviado no cabeçalho de autorização
+        # Check if the token is provided in the 'Authorization' header
         if 'Authorization' in request.headers:
             auth_header = request.headers['Authorization']
             try:
-                token = auth_header.split()[1]  # Divide em "Bearer" e o token
+                token = auth_header.split()[1]  # Split to get the token part
             except IndexError:
                 return jsonify({'message': 'Token malformado!'}), 401
         
@@ -31,7 +35,7 @@ def token_required(f):
             return jsonify({'message': 'Token é necessário!'}), 401
 
         try:
-            # Decodifica o token JWT
+            # Decode the JWT token
             jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             return jsonify({'message': 'Token expirado!'}), 401
@@ -42,24 +46,26 @@ def token_required(f):
     
     return decorated
 
-
 @main.route('/add_user', methods=['POST'])
 def add_user():
+    """
+    Route to add a new user to the database.
+    """
     data = request.get_json()
     user = User(name=data['name'], email=data['email'])
     
-    # Define a senha utilizando o método set_password
+    # Hash the user's password using set_password method
     user.set_password(data['password'])
     
     db.session.add(user)
     try:
         db.session.commit()
 
-        # Gerar o corpo do e-mail formatado
-        logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png"  # Substitua com a URL real do logo
+        # Generate the welcome email body
+        logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png"
         email_body = generate_welcome_email(user.name, logo_url)
 
-        # Enviar o e-mail formatado
+        # Send the welcome email
         send_email(user.email, 'Email cadastrado com sucesso!', email_body)
 
         logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}")
@@ -71,21 +77,23 @@ def add_user():
 
 @main.route('/login', methods=['POST'])
 def login():
+    """
+    Route to log in a user.
+    """
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    # Busca o usuário pelo email
+    # Fetch the user by email
     user = User.query.filter_by(email=email).first()
 
-    # Verifica se o usuário existe e se a senha está correta
+    # Verify the user's password
     if user and user.check_password(password):
-        # Gera um token JWT
+        # Generate a JWT token
         token = jwt.encode({
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }, current_app.config['SECRET_KEY'], algorithm='HS256')
-
 
         logger.info(f"User logged in: {user.name}, {user.email}, ID: {user.id}")
         return jsonify({'token': token})
@@ -96,6 +104,9 @@ def login():
 @main.route('/delete_user/<string:user_id>', methods=['DELETE'])
 @token_required
 def delete_user(user_id):
+    """
+    Route to delete a user by their ID.
+    """
     user = db.session.get(User, user_id)
     if user:
         db.session.delete(user)
@@ -108,6 +119,9 @@ def delete_user(user_id):
 
 @main.route('/users', methods=['GET'])
 def get_users():
+    """
+    Route to retrieve all users in the database.
+    """
     users = User.query.all()
     result = []
     for user in users:

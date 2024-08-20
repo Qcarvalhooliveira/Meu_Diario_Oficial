@@ -34,7 +34,7 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 
 () Criar o email de alerta e atualizar o dashboard. (email criado)
 
-() Criar testes unitarios para cada funcionalidade.
+(x) Criar testes unitarios para cada funcionalidade.
 
 (x) Download PDF.(lendo online)
 
@@ -48,13 +48,13 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 
 () Assegurar que os componentes e as funcionalidades interagam corretamente.
 
-() Teste de carga.
+(x) Teste de leitura do diario oficial.
 
-() Simular PDF de 500 paginas. (não precisa porque estamos testando com o diario real)
+(x) Simular PDF de 500 paginas. (não precisa porque estamos testando com o diario real)
 
 (x) Transformar as letras do user name em minusculas na função task, pois no pdf pode esta escrito de varias formas.
 
-() Criar um array de nomes, para que eles sejam verificados no PDF.
+(x) Criar um array de nomes, para que eles sejam verificados no PDF.
 
 (x) Criar uma função para que o PDF não seja lido dia de sabado e domingo.
 
@@ -62,10 +62,10 @@ Com a realização de um novo cadastro de usuario, o sistema enviara uma mensage
 ## importante
 
 sabendo que o email esta sendo enviado fazer:
-(x)limpar arquivo init para ão enviar mais o email ao ser iniciado. (verificar se esta tudo certo)
+(x)limpar arquivo init para não enviar mais o email ao ser iniciado. (verificar se esta tudo certo)
 (x)verificar o arquivo email
 (x)verificar arquivo tasks
-()fazer o teste funcionar
+(x)fazer o teste funcionar
 (x)colocar o horario que o programa vai fazer a leitura do PDF
 (x)criar email do aplicativo
 (x)modificar o arquivo task para enviar o email para ususarios
@@ -78,6 +78,13 @@ sabendo que o email esta sendo enviado fazer:
 (x) fazer token de login
 (x) bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
 () modificar temporariamente a rota de get ou o banco de dados para permitir ver a senha armazenada para saber se ela esta mesmo sendo hasheada
-() fazer testes do backend
-() padronizar o email
-() fazer rotas de logout
+(x) fazer testes do backend
+(x) padronizar o email
+
+() README falar dos testes
+() README falar de como os arquivos funcionam para as funções principais. talvez em comentarios nos proprios arquivos. coisa como cada rota funciona, como funciona a leitura do pdf. ver arquivo por arquivo e explicar as principais coisas de cada um deles.
+() README explicar o fluxo padrão da aplicaçao - cadastro => rodar task => encontrar match => envio de email um outro para não achar match e um outro para se o app não rodar a task
+() atualizar o docker (ele roda as migrations?) e explicar como usar o app usando o docker e não com a instalação padrão e rodando o python run.py
+(x) README falar as tecnologias usadas nessa aplicação backend (elas estão no topo desse arquivo)
+
+
