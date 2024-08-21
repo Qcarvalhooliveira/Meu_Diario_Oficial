@@ -120,7 +120,8 @@ def delete_user(user_id):
 @main.route('/users', methods=['GET'])
 def get_users():
     """
-    Route to retrieve all users in the database.
+    Route to retrieve all fusers in the database.
+    THIS ROUTE IS FOR DEVELLOPMENT ONLY to allow the dev to see all users on database. for security in PROD we would exclude this route and leave only the one that get users by id
     """
     users = User.query.all()
     result = []
@@ -133,3 +134,48 @@ def get_users():
         result.append(user_data)
     logger.info(f"Users in database: {result}")
     return jsonify(result)
+
+@main.route('/user', methods=['GET'])
+@token_required
+def get_user():
+    """
+    Route to retrieve the authenticated user's information.
+    The user ID is extracted from the JWT token.
+    """
+    # Extract the token from the headers
+    token = None
+    if 'Authorization' in request.headers:
+        auth_header = request.headers['Authorization']
+        try:
+            token = auth_header.split()[1]  # Extract the token part
+        except IndexError:
+            return jsonify({'message': 'Token malformado!'}), 401
+
+    if not token:
+        return jsonify({'message': 'Token é necessário!'}), 401
+
+    try:
+        # Decode the JWT token to extract the user_id
+        data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        user_id = data['user_id']
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token expirado!'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Token inválido ou expirado!'}), 401
+
+    # Query the user by their ID
+    user = User.query.get(user_id)
+    
+    if not user:
+        logger.warning(f"User with ID {user_id} not found.")
+        return jsonify({'message': 'User not found'}), 404
+    
+    # Prepare the user data to be returned
+    user_data = {
+        'id': user.id,
+        'name': user.name,
+        'email': user.email,
+    }
+
+    logger.info(f"User retrieved: {user_data}")
+    return jsonify(user_data), 200

@@ -117,5 +117,32 @@ def test_get_users(test_client, init_database):
     assert response.status_code == 200
     assert len(data) > 0
 
+def test_get_user_by_token(test_client, init_database):
+    """
+    Tests the /user route by sending a GET request to retrieve the authenticated user's information.
+    Verifies that the response contains the correct user data and that the status code is 200.
+    """
+    # Primeiro, faça o login para obter o token
+    login_response = test_client.post('/login', json={
+        'email': 'queisecarvalho@hotmail.com',
+        'password': 'password1'
+    })
+    assert login_response.status_code == 200
+
+    token = login_response.get_json()['token']
+
+    # Tente obter o usuário usando o token
+    response = test_client.get('/user', headers={
+        'Authorization': f'Bearer {token}'
+    })
+
+    # Verifique se o status da resposta é 200 OK
+    assert response.status_code == 200
+
+    # Verifique se os dados do usuário estão corretos
+    data = response.get_json()
+    assert data['email'] == 'queisecarvalho@hotmail.com'
+    assert data['name'] == 'Test User 1'
+
 if __name__ == "__main__":
     pytest.main()
