@@ -115,42 +115,42 @@ The application will start running on http://127.0.0.1:5000/.
 
 ## **Usage**
 
-### **Registering a New User**
+### - **Registering a New User**
 
 Users can register their names and email addresses to receive notifications when their name appears in the gazette.
 
 
-### **Checking the Gazette**
+### - **Checking the Gazette**
 
 The application automatically checks the official gazette daily and sends notifications if any matches are found.
 
-### **Stopping the Application**
+### - **Stopping the Application**
 
 To stop the Flask development server, press CTRL+C in your terminal.
 
 ## **Aplication flow**
 
-#### **1. Success**
+### **1. Success**
 
 This is the standard flow when everything works as expected, and the application finds matches in the official gazette.
 
-**Start daily process**
+* **Start daily process**
 The application is started and checks if it should run on the current day.
 If it's a weekday and not a holiday, the process continues.
 
-**Download PDF**
+* **Download PDF**
 The application downloads the official gazette for the day.
 
-**Extract text**
+* **Extract text**
 The text is extracted from the downloaded PDF.
 
-**Search for keywords**
+* **Search for keywords**
 The application checks if any user-specified keywords are present in the text.
 
-**Send notification**
+* **Send notification**
 If a keyword is found, a notification email is sent to the corresponding user.
 
-**End**
+* **End**
 The process ends successfully.
 
 **Representation:**
@@ -158,40 +158,40 @@ The process ends successfully.
 Start daily process => Download PDF => Extract text => Search for keywords => Send notification => End
 ```
 
-#### **2. Non-running day**
+### **2. Non-running day**
 
 This flow occurs when the application is started on a day that does not require checking, such as weekends or holidays.
 
-**Start daily process**
+* **Start daily process**
 The application checks if it should run on the current day.
 If it's a weekend or holiday, the process stops.
 
-**End**
+* **End**
 The process ends without performing any actions.
 
-**Representation:**
+* **Representation:**
 ```
 Start daily process => Check if it's a working day => End
 ```
 
 
-#### **3. Failure**
+### **3. Failure**
 
 This flow occurs when there is a failure during the process, such as an error in downloading the PDF or extracting the text.
 
-**Start daily process**
+* **Start daily process**
 The application is started and checks if it should run on the current day.
 
-**Attempt to download PDF**
+* **Attempt to download PDF**
 The application attempts to download the official gazette PDF.
 
-**Failure in download or text extraction**
+* **Failure in download or text extraction**
 If the PDF download or text extraction fails, the application retries until the maximum number of attempts is reached.
 
-**Send failure notification**
+* **Send failure notification**
 If all attempts fail, a failure notification email is sent to users informing them of the issue.
 
-**End**
+* **End**
 The process ends after notifying users of the failure.
 
 **Representation:**
@@ -201,20 +201,20 @@ Start daily process => Attempt to download PDF => Failure in download/extraction
 
 ## **Database Process Flow**
 
-#### **1. Create User**
+### **1. Create User**
 
 This flow describes the process when a user registers in the application.
 
-**User registration**
+* **User registration**
 The user submits their name, email, and password to the registration endpoint.
 
-**Save user in the database**
+* **Save user in the database**
 The application saves the user's details (with a hashed password) in the database.
 
-**Send welcome email**
+* **Send welcome email**
 A welcome email is sent to the user confirming their registration.
 
-**End**
+* **End**
 The registration process ends successfully.
 
 **Representation:**
@@ -223,20 +223,20 @@ User registration => Save user in database => Send welcome email => End
 ```
 
 
-#### **2. User Login**
+### **2. User Login**
 
 This flow describes the process when a user logs into the application.
 
-**User login**
+* **User login**
 The user submits their email and password to the login endpoint.
 
-**Authenticate user**
+* **Authenticate user**
 The application checks if the email exists and if the password matches the stored hash.
 
-**Generate JWT token**
+* **Generate JWT token**
 If authentication is successful, a JWT token is generated and returned to the user.
 
-**End**
+* **End**
 The login process ends successfully.
 
 **Representation:**
@@ -245,23 +245,23 @@ User login => Authenticate user => Generate JWT token => End
 ```
 
 
-##### **3. Delete User**
+### **3. Delete User**
 
 This flow describes the process when a user is deleted from the application.
 
-**Request user deletion**
+* **Request user deletion**
 The user sends a request to delete their account, including their user ID.
 
-**Verify token**
+* **Verify token**
 The application verifies the JWT token to ensure the request is authorized.
 
-**Delete user from the database**
+* **Delete user from the database**
 The application removes the user's data from the database.
 
-**Send deletion confirmation**
+* **Send deletion confirmation**
 A confirmation email is sent to the user, notifying them that their account has been deleted.
 
-**End**
+* **End**
 The deletion process ends successfully.
 
 **Representation:**
@@ -279,33 +279,33 @@ Types of Tests
 
 We have implemented a variety of tests to cover different aspects of the application:
 
-**Unit Tests:** These tests focus on individual components of the application, such as functions and methods, to ensure they perform as expected in isolation. The majority of our tests fall into this category, as we aim to validate the functionality of specific pieces of logic independently. For example, test_should_run_today verify if the constraint that the app should not run on specific days is respected, other example might be verifying that password hashing in our user model works as expected.
+- **Unit Tests:** These tests focus on individual components of the application, such as functions and methods, to ensure they perform as expected in isolation. The majority of our tests fall into this category, as we aim to validate the functionality of specific pieces of logic independently. For example, test_should_run_today verify if the constraint that the app should not run on specific days is respected, other example might be verifying that password hashing in our user model works as expected.
 
-**Integration Tests:** These tests check the interaction between different components of the application. For instance, they verify that the process of downloading a PDF, extracting its content, and matching it with user-provided keywords works seamlessly together. An example is testing the flow where a PDF is downloaded, its text is extracted, and notifications are sent if keywords are found, this would involve diferent parts of our code to work together, so we test them together.
+- **Integration Tests:** These tests check the interaction between different components of the application. For instance, they verify that the process of downloading a PDF, extracting its content, and matching it with user-provided keywords works seamlessly together. An example is testing the flow where a PDF is downloaded, its text is extracted, and notifications are sent if keywords are found, this would involve diferent parts of our code to work together, so we test them together.
 
-**End-to-End (E2E) Tests:** We currently do not have specific end-to-end tests, but these would typically simulate real user scenarios, testing the entire application workflow from start to finish.
+- **End-to-End (E2E) Tests:** We currently do not have specific end-to-end tests, but these would typically simulate real user scenarios, testing the entire application workflow from start to finish.
 
-### **Use of Mocks**
+## **Use of Mocks**
 
 Mocks are extensively used in our testing suite to simulate external dependencies and isolate the functionality under test. This approach ensures that our tests are both fast and reliable, as they do not depend on external systems or live data.
 
-**Email Sending:** When testing functions that send emails, we mock the actual email-sending process to avoid sending real emails during testing. Instead, we verify that the correct email content would be sent based on the inputs.
+* **Email Sending:** When testing functions that send emails, we mock the actual email-sending process to avoid sending real emails during testing. Instead, we verify that the correct email content would be sent based on the inputs.
 
-**PDF Downloading and Parsing:** In most cases, we mock the downloading and text extraction process from the official gazette to ensure our tests are repeatable and not dependent on external resources.
+* **PDF Downloading and Parsing:** In most cases, we mock the downloading and text extraction process from the official gazette to ensure our tests are repeatable and not dependent on external resources.
 
-**Example:** When testing the process_daily_pdf function, we mock the PDF content to control the test environment. This allows us to focus on verifying that the notification logic works correctly without relying on an actual PDF download.
+* **Example:** When testing the process_daily_pdf function, we mock the PDF content to control the test environment. This allows us to focus on verifying that the notification logic works correctly without relying on an actual PDF download.
 
-### **Realistic Testing Without Mocks**
+## **Realistic Testing Without Mocks**
 
 While mocks are essential for most tests, we intentionally include test without mocks to ensure the application behaves correctly in a real-world scenario.
 
-**Example:** The test on test_utils.py for the download_pdf function actually downloads the daily official gazette of Salvador and searches for specific names, such as the current mayor and a secretary. This ensures the entire PDF processing pipeline works as expected with real data. We use the name of the mayor and a secretary to keep this test runing longer without crashes since these names should be in must publications of the gazette.
+* **Example:** The test on test_utils.py for the download_pdf function actually downloads the daily official gazette of Salvador and searches for specific names, such as the current mayor and a secretary. This ensures the entire PDF processing pipeline works as expected with real data. We use the name of the mayor and a secretary to keep this test runing longer without crashes since these names should be in must publications of the gazette.
 
-**Reason for Real Data Testing:** Testing with real data ensures that our application remains robust against changes in the PDF structure or content from the official source. It also helps identify issues that might not be apparent in a fully mocked environment.
+* **Reason for Real Data Testing:** Testing with real data ensures that our application remains robust against changes in the PDF structure or content from the official source. It also helps identify issues that might not be apparent in a fully mocked environment.
 
-**Note on Potential Test Failures:** Due to the reliance on real-world data, these tests may occasionally fail if the specific names we search for are not present in the gazette on a given day. Such failures are expected and should prompt a manual check to confirm whether the names indeed appear in the gazette.
+* **Note on Potential Test Failures:** Due to the reliance on real-world data, these tests may occasionally fail if the specific names we search for are not present in the gazette on a given day. Such failures are expected and should prompt a manual check to confirm whether the names indeed appear in the gazette.
 
-### **Running Tests**
+## **Running Tests**
 
 You can run the entire test suite using the following command:
 ```
