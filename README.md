@@ -85,7 +85,9 @@ pip install -r requirements.txt
 
 **4. Set Up Environment Variables**
 
-You need to set up environment variables for the application to function correctly. Create a **.env** file in the root directory of your project and add the following:
+To enable the application to send emails, you need to create an account on [Brevo](https://www.brevo.com/fr/) (formerly Sendinblue). Once registered, you can generate your API key to use with this application.
+
+After creating your account and obtaining your API key, set up the environment variables for the application function correctly. Create a **.env** file in the root directory of your project and add the following:
 
 ```
 SENDINBLUE_API_KEY=your_sendinblue_api_key
@@ -145,7 +147,7 @@ The application downloads the official gazette for the day.
 The text is extracted from the downloaded PDF.
 
 * **Search for keywords**
-The application checks if any user-specified keywords are present in the text.
+The application checks if any name of a user is present in the text.
 
 * **Send notification**
 If a keyword is found, a notification email is sent to the corresponding user.
@@ -269,9 +271,6 @@ The deletion process ends successfully.
 Request user deletion => Verify token => Delete user from database => Send deletion confirmation => End
 ```
 
-These flow descriptions provide a clear and concise overview of the different processes within your application, both for daily operations and for user management.
-
-
 ## **Testing**
 
 Testing is a crucial part of our development process, ensuring that the application behaves as expected under various conditions. This section provides an overview of the types of tests implemented, how they are executed, and the reasoning behind certain testing decisions.
@@ -285,7 +284,7 @@ We have implemented a variety of tests to cover different aspects of the applica
 
 - **End-to-End (E2E) Tests:** We currently do not have specific end-to-end tests, but these would typically simulate real user scenarios, testing the entire application workflow from start to finish.
 
-## **Use of Mocks**
+### **Use of Mocks**
 
 Mocks are extensively used in our testing suite to simulate external dependencies and isolate the functionality under test. This approach ensures that our tests are both fast and reliable, as they do not depend on external systems or live data.
 
@@ -295,7 +294,7 @@ Mocks are extensively used in our testing suite to simulate external dependencie
 
 * **Example:** When testing the process_daily_pdf function, we mock the PDF content to control the test environment. This allows us to focus on verifying that the notification logic works correctly without relying on an actual PDF download.
 
-## **Realistic Testing Without Mocks**
+### **Realistic Testing Without Mocks**
 
 While mocks are essential for most tests, we intentionally include test without mocks to ensure the application behaves correctly in a real-world scenario.
 
@@ -305,7 +304,7 @@ While mocks are essential for most tests, we intentionally include test without 
 
 * **Note on Potential Test Failures:** Due to the reliance on real-world data, these tests may occasionally fail if the specific names we search for are not present in the gazette on a given day. Such failures are expected and should prompt a manual check to confirm whether the names indeed appear in the gazette.
 
-## **Running Tests**
+### **Running Tests**
 
 You can run the entire test suite using the following command:
 ```
@@ -315,13 +314,7 @@ This will execute all tests, including unit and integration tests (we currently 
 
 ### **Test Coverage Across the Application**
 
-Each core file of the application has an associated test file, where we aim to cover most of the functionalities within that file. However, it's not always a one-to-one mapping—in some cases, a single test can cover multiple aspects of the application. For instance, the test_process_daily_pdf_success test not only verifies that a notification is sent, but by doing so, it implicitly tests that the PDF was correctly downloaded and parsed, and that the keyword matching logic is functioning as intended.
-
-### **Additional Notes**
-
-**Comprehensive Testing:** We strive to ensure that our tests cover as many scenarios as possible, including edge cases. However, as with any testing suite, there are trade-offs between thoroughness and practicality.
-
-**Testing Strategy:** Our strategy includes a mix of isolated unit tests for critical logic, integration tests to ensure components work together, and a few real-world tests that interact with live data to validate the entire system under actual conditions.
+Each core file of the application has an associated test file, where we aim to cover most of the functionalities within that file. However, it's not always a one-to-one mapping, in some cases, a single test can cover multiple aspects of the application. For instance, the test_process_daily_pdf_success test not only verifies that a notification is sent, but by doing so, it implicitly tests that the PDF was correctly downloaded and parsed, and that the keyword matching logic is functioning as intended.
 
 
 ## **Author** :black_nib:
