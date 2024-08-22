@@ -1,4 +1,4 @@
-<img src="https://github.com/Qcarvalhooliveira/Meu_Diario_Oficial/blob/main/image/logo.png" width="1000" height="300">
+<img src="https://github.com/Qcarvalhooliveira/Meu_Diario_Oficial/blob/main/image/logo.png" width="1000" height="250">
 
 # **Meu Diário Oficial - Back-End**
 
