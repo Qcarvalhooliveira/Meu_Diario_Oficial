@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 app = create_app()
 
-# Configuração do APScheduler
+# Configuration for APScheduler
 scheduler = BackgroundScheduler()
 
 def scheduled_task():
@@ -19,13 +19,13 @@ def scheduled_task():
             logger.info("Running scheduled task")
             process_daily_pdf()
 
-# Agendar a tarefa para rodar todos os dias às 12:50
+# Schedule the task to run every day at 12:50
 scheduler.add_job(func=scheduled_task, trigger=CronTrigger(hour=12, minute=50))
 
 scheduler.start()
 
-# Fecha o agendador quando a aplicação parar
+# Shut down the scheduler when the application exits
 atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

@@ -1,12 +1,14 @@
 Flask
 Flask-SQLAlchemy
+Flask-Migrate
 pypdf
 requests
 pytest
 pytest-flask
-seleniumls
+selenium
 sib-api-v3-sdk
 apscheduler
-atexit
 bcrypt
-jwt
+PyJWT
+python-dotenv
+

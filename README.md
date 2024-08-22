@@ -24,6 +24,8 @@ This project utilizes the following technologies and libraries:
 - **APScheduler**: A lightweight in-process task scheduler for Python, used for scheduling the daily gazette checks.
 - **bcrypt**: A library to hash and check passwords securely.
 - **PyJWT**: A Python library for creating and verifying JSON Web Tokens, used for handling authentication.
+- **python-dotenv**: A Python library that loads environment variables from a .env file into the environment, making it easy to manage configuration settings for different environments.
+
 
 
 ## **Key Features**

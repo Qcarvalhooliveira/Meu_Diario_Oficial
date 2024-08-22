@@ -1,4 +1,3 @@
-# tasks.py
 from . import db
 from .models import User
 from .utils import download_pdf, extract_text_from_pdf
@@ -46,6 +45,7 @@ def process_daily_pdf():
                         logger.info(f"Keyword '{user.name}' found for user {user.email}")
                         send_notification(user.email, user.name)
                 success = True
+                break
             else:
                 print("PDF file is None.")
         except Exception as e:
