@@ -19,7 +19,7 @@ This project utilizes the following technologies and libraries:
 - **requests**: A simple, yet powerful HTTP library for making requests to web services.
 - **pytest**: A testing framework for Python, used for writing unit tests.
 - **pytest-flask**: A plugin for testing Flask applications with pytest.
-- **Selenium**: A tool for automating web browsers, potentially used for interaction with web elements.
+- **Selenium**: A tool for automating web browsers, used for interaction with web elements.
 - **sib-api-v3-sdk**: SDK to interact with the Sendinblue API for sending emails.
 - **APScheduler**: A lightweight in-process task scheduler for Python, used for scheduling the daily gazette checks.
 - **bcrypt**: A library to hash and check passwords securely.
