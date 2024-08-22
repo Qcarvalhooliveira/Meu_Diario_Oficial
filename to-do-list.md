@@ -86,5 +86,3 @@ sabendo que o email esta sendo enviado fazer:
 (x) README explicar o fluxo padrão da aplicaçao - cadastro => rodar task => encontrar match => envio de email um outro para não achar match e um outro para se o app não rodar a task
 () atualizar o docker (ele roda as migrations?) e explicar como usar o app usando o docker e não com a instalação padrão e rodando o python run.py
 (x) README falar as tecnologias usadas nessa aplicação backend (elas estão no topo desse arquivo)
-
-
