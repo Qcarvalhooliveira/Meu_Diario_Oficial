@@ -77,11 +77,11 @@ sabendo que o email esta sendo enviado fazer:
 (x) fazer rotas de login - protegida
 (x) fazer token de login
 (x) bug fix - esta mandando email duas vezes aparentemente resolvido mas precisa ver em outros dias
-() modificar temporariamente a rota de get ou o banco de dados para permitir ver a senha armazenada para saber se ela esta mesmo sendo hasheada
+() modificar temporariamente a rota de get ou o banco de dados para permitir ver a senha armazenada para saber se ela esta mesmo sendo hasheada 
 (x) fazer testes do backend
 (x) padronizar o email
 
-() README falar dos testes
+(x) README falar dos testes
 (x) README falar de como os arquivos funcionam para as funções principais. talvez em comentarios nos proprios arquivos. coisa como cada rota funciona, como funciona a leitura do pdf. ver arquivo por arquivo e explicar as principais coisas de cada um deles.
 (x) README explicar o fluxo padrão da aplicaçao - cadastro => rodar task => encontrar match => envio de email um outro para não achar match e um outro para se o app não rodar a task
 () atualizar o docker (ele roda as migrations?) e explicar como usar o app usando o docker e não com a instalação padrão e rodando o python run.py
