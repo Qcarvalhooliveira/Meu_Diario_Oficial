@@ -46,7 +46,7 @@ def token_required(f):
     
     return decorated
 
-@main.route('/add_user', methods=['POST'])
+@main.route('/add_user', methods=['POST']) # feito (v)
 def add_user():
     """
     Route to add a new user to the database.
@@ -69,13 +69,13 @@ def add_user():
         send_email(user.email, 'Email cadastrado com sucesso!', email_body)
 
         logger.info(f"User added: {user.name}, {user.email}, ID: {user.id}")
-        return jsonify({'message': 'User added successfully!'})
+        return jsonify({'message': 'User added successfully!'}), 201
     except IntegrityError:
         db.session.rollback()
         logger.warning(f"Email {user.email} already exists in the database.")
-        return jsonify({'message': 'This email is already registered. Please use another email.'}), 400
+        return jsonify({'message': 'This email is already registered. Please use another email.'}), 409
 
-@main.route('/login', methods=['POST'])
+@main.route('/login', methods=['POST']) # feito ()
 def login():
     """
     Route to log in a user.
@@ -101,7 +101,7 @@ def login():
         logger.warning(f"Failed login attempt for email: {email}")
         return jsonify({'message': 'Email ou senha incorretos!'}), 401
 
-@main.route('/delete_user/<string:user_id>', methods=['DELETE'])
+@main.route('/delete_user/<string:user_id>', methods=['DELETE']) # feito ()
 @token_required
 def delete_user(user_id):
     """
@@ -117,7 +117,7 @@ def delete_user(user_id):
         logger.warning(f"User not found: ID {user_id}")
         return jsonify({'message': 'User not found!'}), 404
 
-@main.route('/users', methods=['GET'])
+@main.route('/users', methods=['GET']) # feito () tirar all ou deixar sem fazer?
 def get_users():
     """
     Route to retrieve all fusers in the database.
@@ -135,7 +135,7 @@ def get_users():
     logger.info(f"Users in database: {result}")
     return jsonify(result)
 
-@main.route('/user', methods=['GET'])
+@main.route('/user', methods=['GET']) # feito ()
 @token_required
 def get_user():
     """
@@ -180,7 +180,7 @@ def get_user():
     logger.info(f"User retrieved: {user_data}")
     return jsonify(user_data), 200
 
-@main.route('/contact', methods=['POST'])
+@main.route('/contact', methods=['POST']) # feito (x)
 def contact():
     """
     Route to handle contact form submission.
