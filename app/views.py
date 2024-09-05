@@ -179,3 +179,30 @@ def get_user():
 
     logger.info(f"User retrieved: {user_data}")
     return jsonify(user_data), 200
+
+@main.route('/contact', methods=['POST'])
+def contact():
+    """
+    Route to handle contact form submission.
+    Receives the user's name, email, and message, then sends an email to the application owner.
+    """
+    data = request.get_json()
+    
+    if not data or not data.get('name') or not data.get('email') or not data.get('message'):
+        return jsonify({'message': 'All fields are required!'}), 400
+
+    name = data['name']
+    email = data['email']
+    message = data['message']
+    
+    subject = f"Novo contato solicitando informações de {name}"
+    body = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+    recipient = "meu.diario.oficial.ssa@gmail.com"
+    
+    try:
+        send_email(recipient, subject, body)
+        logger.info(f"Contact form submitted by {name} ({email}).")
+        return jsonify({'message': 'Your message has been sent successfully!'}), 200
+    except Exception as e:
+        logger.error(f"Failed to send contact form email: {e}")
+        return jsonify({'message': 'Failed to send message. Please try again later.'}), 500

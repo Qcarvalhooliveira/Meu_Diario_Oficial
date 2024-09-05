@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
@@ -15,6 +16,7 @@ def create_app():
     Factory function for creating and configuring the Flask application.
     """
     app = Flask(__name__)
+    CORS(app)
 
     # Set secret key for session management and JWT
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')

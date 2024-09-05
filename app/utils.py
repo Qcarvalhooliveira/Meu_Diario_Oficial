@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import io
 import os
@@ -22,8 +23,8 @@ def download_pdf(url):
     # Set up Chrome options to run in headless mode (no GUI)
     options = Options()
     options.headless = True  # Run Chrome in headless mode (no GUI)
-    driver_service = Service(chromedriver_path)
-
+    driver_service = Service(ChromeDriverManager().install())
+  
     # Use a context manager to ensure the WebDriver is properly closed after use
     with webdriver.Chrome(service=driver_service, options=options) as driver:
         driver.get(url)

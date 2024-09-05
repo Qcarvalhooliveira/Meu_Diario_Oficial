@@ -5,10 +5,13 @@ pypdf
 requests
 pytest
 pytest-flask
+webdriver-manager
 selenium
 sib-api-v3-sdk
 apscheduler
 bcrypt
 PyJWT
 python-dotenv
+flask-cors
+
 
