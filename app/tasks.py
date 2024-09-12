@@ -1,3 +1,4 @@
+import requests
 from . import db
 from .models import User
 from .utils import download_pdf, extract_text_from_pdf
@@ -69,12 +70,24 @@ def send_notification(email, keyword):
     was found in the daily publication.
     """
     print(f"Sending notification to {email} for keyword '{keyword}'...")
+
     subject = "Parabéns! Seu nome foi encontrado no Diário Oficial"
     logo_url = "http://www.dom.salvador.ba.gov.br/images/stories/logo_diario.png" 
     body = generate_notification_email(keyword, logo_url)
     send_email(email, subject, body)
     logger.info(f"Notification sent to {email} for keyword '{keyword}'")
     print(f"Notification sent to {email}.")
+
+    user = User.query.filter_by(email=email).first()
+    if user:
+        try:
+            response = requests.post(f'http://127.0.0.1:5000/select_user/{user.id}')
+            if response.status_code == 200:
+                logger.info(f"User selection registered for {user.name} (ID: {user.id})")
+            else:
+                logger.error(f"Failed to register selection for {user.name} (ID: {user.id}). Status code: {response.status_code}")
+        except requests.RequestException as e:
+            logger.error(f"Error registering user selection for {user.name}: {e}")
 
 def notify_failure():
     """

@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint, current_app
 from sqlalchemy.exc import IntegrityError
 from . import db
-from .models import User
+from .models import User, UserSelection
 import logging
 import jwt
 import datetime
@@ -27,7 +27,7 @@ def token_required(f):
         if 'Authorization' in request.headers:
             auth_header = request.headers['Authorization']
             try:
-                token = auth_header.split()[1]  # Split to get the token part
+                token = auth_header.split()[1] 
             except IndexError:
                 return jsonify({'message': 'Token malformado!'}), 401
         
@@ -46,7 +46,7 @@ def token_required(f):
     
     return decorated
 
-@main.route('/add_user', methods=['POST']) # feito (v)
+@main.route('/add_user', methods=['POST']) 
 def add_user():
     """
     Route to add a new user to the database.
@@ -75,7 +75,7 @@ def add_user():
         logger.warning(f"Email {user.email} already exists in the database.")
         return jsonify({'message': 'This email is already registered. Please use another email.'}), 409
 
-@main.route('/login', methods=['POST']) # feito ()
+@main.route('/login', methods=['POST'])
 def login():
     """
     Route to log in a user.
@@ -101,7 +101,7 @@ def login():
         logger.warning(f"Failed login attempt for email: {email}")
         return jsonify({'message': 'Email ou senha incorretos!'}), 401
 
-@main.route('/delete_user/<string:user_id>', methods=['DELETE']) # feito ()
+@main.route('/delete_user/<string:user_id>', methods=['DELETE']) 
 @token_required
 def delete_user(user_id):
     """
@@ -135,7 +135,7 @@ def get_users():
     logger.info(f"Users in database: {result}")
     return jsonify(result)
 
-@main.route('/user', methods=['GET']) # feito ()
+@main.route('/user', methods=['GET'])
 @token_required
 def get_user():
     """
@@ -147,7 +147,7 @@ def get_user():
     if 'Authorization' in request.headers:
         auth_header = request.headers['Authorization']
         try:
-            token = auth_header.split()[1]  # Extract the token part
+            token = auth_header.split()[1] 
         except IndexError:
             return jsonify({'message': 'Token malformado!'}), 401
 
@@ -170,17 +170,22 @@ def get_user():
         logger.warning(f"User with ID {user_id} not found.")
         return jsonify({'message': 'User not found'}), 404
     
-    # Prepare the user data to be returned
+    # Retrieve user selections (dates when the user was selected)
+    selections = UserSelection.query.filter_by(user_id=user.id).all()
+    selection_dates = [selection.selected_at.strftime('%Y-%m-%d %H:%M:%S') for selection in selections]
+    
+     # Prepare the user data to be returned, including the selection dates
     user_data = {
         'id': user.id,
         'name': user.name,
         'email': user.email,
+        'selections': selection_dates
     }
 
     logger.info(f"User retrieved: {user_data}")
     return jsonify(user_data), 200
 
-@main.route('/contact', methods=['POST']) # feito (x)
+@main.route('/contact', methods=['POST'])
 def contact():
     """
     Route to handle contact form submission.
@@ -206,3 +211,21 @@ def contact():
     except Exception as e:
         logger.error(f"Failed to send contact form email: {e}")
         return jsonify({'message': 'Failed to send message. Please try again later.'}), 500
+
+@main.route('/select_user/<string:user_id>', methods=['POST'])
+def select_user(user_id):
+    """
+    Route to register a user selection and the time it happened.
+    """
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Registrar a data de seleção
+    selection = UserSelection(user_id=user.id)
+    db.session.add(selection)
+    db.session.commit()
+
+    logger.info(f"User {user.name} selected at {selection.selected_at}")
+    return jsonify({'message': f'User {user.name} selected successfully!'}), 200
