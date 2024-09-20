@@ -288,7 +288,7 @@ The deletion process ends successfully.
 Request user deletion => Verify token => Delete user from database => Send deletion confirmation => End
 ```
 
-## **Testing**
+## **Testing** :bookmark_tabs:
 
 Testing is a crucial part of our development process, ensuring that the application behaves as expected under various conditions. This section provides an overview of the types of tests implemented, how they are executed, and the reasoning behind certain testing decisions.
 Types of Tests
