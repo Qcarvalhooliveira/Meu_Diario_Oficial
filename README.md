@@ -1,13 +1,36 @@
-<img src="https://github.com/Qcarvalhooliveira/Meu_Diario_Oficial/blob/main/image/logo.png" width="1000" height="250">
+<img src="https://github.com/Qcarvalhooliveira/Meu_diario_Oficial_Frontend/blob/main/image/capa.png">
 
-# **Meu Diário Oficial - Back-End**
+# **Meu Diário Oficial - Back-End** :computer:
 
 
-## **Overview**
+## **Overview** :mag_right:
 
 Meu Diário Oficial is a Python-based application designed to monitor the official gazette of Salvador, Brazil, and notify users via email when their names appear in the publications. The application automates the process of checking the gazette daily, making it easier for users to stay informed about public notices that involve them, such as job postings, legal notifications, and other relevant updates.
 
-## **Technologies Used**
+## **Table of Contents** :clipboard:
+
+
+* Features
+* Technologies
+* Installation
+* Usage
+* Aplication flow
+* Database Process Flow
+* Testing
+* Contributing
+* Author
+
+
+## **Features** :memo:
+
+* **Automated Daily Monitoring:** The application downloads the official gazette daily and checks for user-specified keywords.
+
+* **Email Notifications:** Sends an email to the user if their name or specified keyword is found in the daily publication.
+
+* **User Management:** Users can register with their email and desired keyword(s) to start receiving notifications.
+
+
+## **Technologies Used** :dart:
 
 This project utilizes the following technologies and libraries:
 
@@ -27,16 +50,7 @@ This project utilizes the following technologies and libraries:
 - **python-dotenv**: A Python library that loads environment variables from a .env file into the environment, making it easy to manage configuration settings for different environments.
 
 
-
-## **Key Features**
-
-* **Automated Daily Monitoring:** The application downloads the official gazette daily and checks for user-specified keywords.
-
-* **Email Notifications:** Sends an email to the user if their name or specified keyword is found in the daily publication.
-
-* **User Management:** Users can register with their email and desired keyword(s) to start receiving notifications.
-
-## **Installation**
+## **Installation** :vertical_traffic_light:
 
 ### **Prerequisites**
 
@@ -48,7 +62,7 @@ Ensure you have the following installed on your system:
 
 ### **Steps to Install**
 
-**1. Clone the Repository**
+**1. Clone the Repository** :construction:
 
 First, clone the repository to your local machine using the following command:
 
@@ -57,7 +71,7 @@ git clone https://github.com/Qcarvalhooliveira/Meu_Diario_Oficial.git
 cd Meu_Diario_Oficial
 ```
 
-**2. Create a Virtual Environment**
+**2. Create a Virtual Environment** :round_pushpin:
 
 It's recommended to use a virtual environment to manage dependencies. You can create one using:
 
@@ -77,7 +91,7 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-**3. Install Dependencies**
+**3. Install Dependencies** :triangular_flag_on_post:
 
 Install the required Python packages using pip:
 
@@ -85,7 +99,7 @@ Install the required Python packages using pip:
 pip install -r requirements.txt
 ```
 
-**4. Set Up Environment Variables**
+**4. Set Up Environment Variables** :triangular_flag_on_post:
 
 To enable the application to send emails, you need to create an account on [Brevo](https://www.brevo.com/fr/) (formerly Sendinblue). Once registered, you can generate your API key to use with this application.
 
@@ -99,7 +113,7 @@ SECRET_KEY=your_secret_key_for_jwt
 
 Replace your_sendinblue_api_key, your_default_sender_email, and your_secret_key_for_jwt with your actual credentials.
 
-**5. Apply Migrations**
+**5. Apply Migrations** :busstop:
 
 Before running the application, apply the database migrations:
 
@@ -107,7 +121,7 @@ Before running the application, apply the database migrations:
 flask db upgrade
 ```
 
-**6. Run the Application**
+**6. Run the Application** :checkered_flag:
 
 Start the Flask development server:
 
@@ -117,7 +131,7 @@ python run.py
 
 The application will start running on http://127.0.0.1:5000/.
 
-## **Usage**
+## **Usage** :bulb:
 
 ### - **Registering a New User**
 
@@ -132,7 +146,8 @@ The application automatically checks the official gazette daily and sends notifi
 
 To stop the Flask development server, press CTRL+C in your terminal.
 
-## **Aplication flow**
+
+## **Aplication flow** :globe_with_meridians:
 
 ### **1. Success**
 
@@ -203,7 +218,7 @@ The process ends after notifying users of the failure.
 Start daily process => Attempt to download PDF => Failure in download/extraction => Send failure notification => End
 ```
 
-## **Database Process Flow**
+## **Database Process Flow** :date:
 
 ### **1. Create User**
 
@@ -319,10 +334,20 @@ This will execute all tests, including unit and integration tests (we currently 
 Each core file of the application has an associated test file, where we aim to cover most of the functionalities within that file. However, it's not always a one-to-one mapping, in some cases, a single test can cover multiple aspects of the application. For instance, the test_process_daily_pdf_success test not only verifies that a notification is sent, but by doing so, it implicitly tests that the PDF was correctly downloaded and parsed, and that the keyword matching logic is functioning as intended.
 
 
+## **Contributing** :sparkles:
+
+Contributions are welcome to the project! 
+
+To contribute:
+
+* Fork the repository.
+* Create a new branch (git checkout -b feature/your-feature).
+* Make your changes.
+* Submit a pull request.
+
+Make sure to run the tests and follow the code style guidelines before submitting.
+
 ## **Author** :black_nib:
 
 * **Queise Carvalho de Oliveira** - [Queise Oliveira](https://github.com/Qcarvalhooliveira)
 
-
-## License :page_with_curl:
-This project is licensed under the [MIT License](https://opensource.org/license/mit/).
